@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <ion-icon name="person" style="color:lightgray; font-size:23px; padding:10px 0px;"></ion-icon>
+        <li>
+            @Html.ActionLink("Witaj, " + User.Identity.GetUserName() + "!", "Index", "Manage", new { title = "Manage" }, new { @class = "nav-link" })
+        </li>
+        <ion-icon name="log-out" style="color:lightgray; font-size:23px; padding:10px 0px;"></ion-icon> <li><a class ="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <ion-icon name="person-add" style="color:lightgray; font-size:23px; padding:10px 0px;"></ion-icon> <li>@Html.ActionLink("Zarejestruj", "Register", "Account", new { id = "registerLink" }, new { @class = "nav-link" })</li>
+        <ion-icon name="log-in" style="color:lightgray; font-size:23px; padding:10px 0px;"></ion-icon><li>@Html.ActionLink("Zaloguj", "Login", "Account", new { id = "loginLink" }, new { @class = "nav-link" }) </li>
+    </ul>
+}

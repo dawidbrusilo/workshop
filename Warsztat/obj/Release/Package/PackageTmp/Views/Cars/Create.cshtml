@@ -1,0 +1,153 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model Warsztat.Models.Car
+
+@{
+    ViewBag.Title = "Dodaj auto";
+}
+
+
+
+<h2 class="mt-5"> <ion-icon name="create"></ion-icon> Dodaj auto </h2>
+
+@using (Html.BeginForm("Create", "Cars", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-row">
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.Make, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Make, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Make, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.Model, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+
+                @Html.LabelFor(model => model.Engine, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Engine, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                    @Html.ValidationMessageFor(model => model.Engine, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.DateOfProduction, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DateOfProduction, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DateOfProduction, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.PlateNumber, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PlateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PlateNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.Vin, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Vin, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Vin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.ApplicationUserID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.ApplicationUserID, new { htmlAttributes = new { @class = "form-control", @value = ViewBag.Value } })
+                    @Html.ValidationMessageFor(model => model.ApplicationUserID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationUserID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("OwnerName", null, new { @class = "form-control", id = "OwnerName" })
+                    @*<input type="text" id="txtCustomer" name="CustomerName" />*@
+                    <input type="hidden" id="OwnerId" name="ApplicationUserID" />
+                    @Html.ValidationMessageFor(model => model.ApplicationUserID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <input type="hidden" name="ApplicationUserID" id="ApplicationUserID" value="@User.Identity.GetUserId()" />
+        }
+
+        <div class="form-group mt-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Dodaj" class="btn btn-dark" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="mt-3">
+    @Html.ActionLink("Wróc do listy", "Index")
+</div>
+
+
+
+<link href="~/Content/themes/base/jquery-ui.css"
+      rel="stylesheet"
+      type="text/css" />
+
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#OwnerName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Cars/AutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#OwnerId").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    </script>}

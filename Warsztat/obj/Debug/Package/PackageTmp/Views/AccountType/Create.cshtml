@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+
+<h2 class="mt-5 mb-3">Utwórz rolę</h2>
+
+<hr />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="mt-5">
+        <strong>Nazwa roli</strong> 
+    </div>
+    <p>
+        @Html.TextBox("TypKonta",null, new { @class = "form-control" })
+    </p>
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-dark mt-4" value="Utwórz" />
+        </div>
+    </div>
+}

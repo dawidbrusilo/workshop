@@ -1,0 +1,152 @@
+﻿@model Warsztat.Models.Report
+    @using Microsoft.AspNet.Identity
+
+
+
+@{
+    ViewBag.Title = "Nowe zgłoszenie";
+}
+
+<h2 class="mt-5"><ion-icon name="create"></ion-icon> Utwórz zgłoszenie  </h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" name="UserId" id="UserId" value="@User.Identity.GetUserId()" />
+        <input type="hidden" name="Created" id="Created" value="@DateTime.Now" />
+        @*<input type="hidden" name="CarID" id="CarID" value="1" />*@
+        <div class="form-row">
+            <div class="col mb-3">
+
+                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(model => model.State, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+
+            <div class="col">
+                @Html.LabelFor(model => model.ReportedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+
+                    @Html.EditorFor(model => model.ReportedBy, new { htmlAttributes = new { @class = "form-control", @Value = @User.Identity.Name, @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.ReportedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.ReportType, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(model => model.ReportType, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ReportType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col mb-3">
+                @Html.LabelFor(model => model.CarID, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @Html.TextBox("Car", null, new { @class = "form-control", id = "Car" })
+                        <input type="hidden" id="CarID" name="CarID" />
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.CarID, (IEnumerable<SelectListItem>)ViewBag.cars, new { @class = "form-control" })
+                    }
+                    @Html.ValidationMessageFor(model => model.CarID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Mileage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mileage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mileage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" id="Title">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+        </div>
+
+
+        <div class="form-group " id=" Title">
+
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+        </div>
+
+        <div class="form-group">
+            <div class=" col-md-12 mt-5   ">
+                <input type="submit" value="Utwórz" class="btn btn-dark" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="mt-5">
+    @Html.ActionLink("Powrót do listy", "Index")
+</div>
+
+
+<link href="~/Content/themes/base/jquery-ui.css"
+      rel="stylesheet"
+      type="text/css" />
+
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#Car").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Reports/AutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#CarID").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    </script>}

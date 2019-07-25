@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title — Warsztat</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse aria-controls=" navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" " >
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+                @Html.ActionLink("Warsztat", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            </div>
+            <div class="navbar-collapse collapse ">
+                <ul class="navbar-nav mr-auto">
+                    <li></li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">@Html.ActionLink("Baza klientów", "Index", "Clients", new { area = "" }, new { @class = "nav-link" })</li>}
+                    <li class="dropdown ">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Samochody <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Lista samochodów", "Index", "Cars", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Dodaj auto", "Create", "Cars", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Zgłoszenia<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Utwórz zgłoszenie", "Create", "Reports", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Lista zgłoszeń", "Index", "Reports", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Historia napraw", "History", "Reports", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        </ul>
+
+
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Zarządzanie rolami <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Role", "Index", "AccountType", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Utwórz rolę", "Create", "AccountType", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Zarządzaj rolami", "Manage", "AccountType", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            </ul>
+                        </li>}
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </nav>
+        <div class="container body-content">
+
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year — Warsztat by Dawid Brusiło</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+        <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+    </body>
+</html>

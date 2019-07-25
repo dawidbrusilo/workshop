@@ -1,0 +1,113 @@
+﻿@model PagedList.IPagedList<Warsztat.Models.Report>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "Historia zgłoszeń";
+}
+
+<h2 class="mt-5">Historia zgłoszeń użytkownika</h2>
+
+@using (Html.BeginForm())
+{
+    <form>
+        <div class="form-group float-left mt-2">
+            <p>
+                <b>Wyszukaj po numerze zgłoszenia:</b> @Html.TextBox("search", null, new { @class = "form-input" })
+                <input class="btn btn-dark" type="submit" value="Wyszukaj" />
+            </p>
+        </div>
+    </form>
+
+}
+
+<table class="table table-striped mt-4">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Nr.
+            </th>
+            <th>
+                Typ
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Auto
+            </th>
+            <th>
+                Przebieg
+            </th>
+            <th>
+                Tytuł
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Zgłaszający
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Car.Make)
+            @Html.DisplayFor(modelItem => item.Car.Model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mileage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Created)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportedBy)
+        </td>
+        <td>
+            @Html.ActionLink("Aktualizuj", "Edit", "Reports", new { id = item.Id }, null)
+        </td>
+        <td>            
+            @Html.ActionLink("Szczegóły", "Details", "Reports", new { id = item.Id }, null)
+        </td>
+            <td>
+            @Html.ActionLink("Usuń", "Delete", "Reports", new { id = item.Id }, null)
+        </td>
+
+
+
+    </tr>
+    }
+
+    @ViewBag.error
+
+</table>
+<div class="text-right mt-5">
+    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+    <div>@Html.PagedListPager(Model, page => Url.Action("ClientReports", new { page }))</div>
+</div>

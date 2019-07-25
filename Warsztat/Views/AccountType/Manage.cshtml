@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "ManageUserRoles";
+}
+
+<h2 class="mt-5"> Zarządzaj rolami</h2>
+
+@Html.ActionLink("Utwórz rolę", "Create")
+
+
+<hr />
+<div class="bg-success">@ViewBag.Message</div>
+<h2 class="mt-5">Przypisz rolę</h2>
+
+@using (Html.BeginForm("AddRole", "AccountType"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        <b>Nazwa użytkownika:</b> @Html.TextBox("Username", null, new { @class = "form-control" })
+        <b>Rola:</b> @Html.DropDownList("role", (IEnumerable<SelectListItem>)ViewBag.Role, "Wybierz rolę:", new { @class = "form-control" })
+
+    </p>
+
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-dark" value="Zapisz" />
+        </div>
+    </div>
+
+
+}
+<hr />
+<h2 class="mt-5">Sprawdź przypisane role</h2>
+@using (Html.BeginForm("GetRoles", "AccountType"))
+{
+    @Html.AntiForgeryToken()
+    <p>
+        <b>Nazwa użytkownika:</b> @Html.TextBox("Username", null, new { @class = "form-control" })
+    </p>
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-dark" value="Sprawdź" />
+        </div>
+    </div>
+}
+
+@if (ViewBag.UserRoles != null)
+{
+    <div style="background-color:#cfcfcf;">
+        <h3>Przypisane role: </h3>
+        <ol>
+            @foreach (string r in ViewBag.UserRoles)
+            {
+                <li>@r</li>
+            }
+        </ol>
+    </div>
+}
+
+<hr />
+<h3 class="mt-5">Usuń przypisną rolę</h3>
+
+@using (Html.BeginForm("DeleteRoleForUser", "AccountType"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        <b>Nazwa użytkownika:</b> @Html.TextBox("Username", null, new { @class = "form-control" })
+        <b>Rola:</b> @Html.DropDownList("role", (IEnumerable<SelectListItem>)ViewBag.Role, "Wybierz rolę:", new { @class = "form-control" })
+
+    </p>
+
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-dark" value="Usuń" />
+        </div>
+    </div>
+}

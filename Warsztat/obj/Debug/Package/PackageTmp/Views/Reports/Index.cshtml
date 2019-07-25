@@ -1,0 +1,131 @@
+﻿@model PagedList.IPagedList<Warsztat.Models.Report>
+@using PagedList.Mvc;
+@using Warsztat.Models
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "Lista zgłoszeń";
+}
+
+
+<h2 class="mt-5">Lista zgłoszeń</h2>
+
+
+@Html.ActionLink("Nowe zgłoszenie", "Create")
+@using (Html.BeginForm())
+{
+    <form>
+        <div class="form-group float-left mt-2 mr-5">
+            <p>
+                <b>Wyszukaj po numerze zgłoszenia:</b> @Html.TextBox("search", null, new { @class = "form-input" })
+                <input class="btn btn-dark" type="submit" value="Wyszukaj" />
+            </p>
+        </div>
+    </form>
+
+}
+
+@using (Html.BeginForm())
+
+{
+    
+    <div class="form-inline ml-5 mt-2 ">
+        <div>
+            @Html.DropDownList("stat", new SelectList(Enum.GetValues(typeof(State))), "Sortuj po statusie", new { @class = "form-control" })
+
+        </div>
+        <div>
+            <input class="btn btn-dark" type="submit" value="Sortuj" />
+        </div>
+    </div>
+
+}
+
+<table class="table table-striped mt-4">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Nr.
+            </th>
+            <th>
+                Typ
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Auto
+            </th>
+            <th>
+                Tytuł
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Zgłaszający
+            </th>
+            <th></th>
+            @if (User.IsInRole("Admin"))
+            {
+                
+                <th></th>
+                <th></th>
+            }
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.Make)
+                @Html.DisplayFor(modelItem => item.Car.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportedBy)
+            </td>
+            @if (User.IsInRole("Admin"))
+            {
+
+
+                <td>  @Html.ActionLink("Aktualizuj", "Edit", new { id = item.Id })</td>
+                <td>   @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) </td>
+                <td>    @Html.ActionLink("Usuń", "Delete", new { id = item.Id })</td>
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.Id })
+                </td>
+            }
+
+
+
+        </tr>
+    }
+
+
+
+</table>
+<div class="text-right mt-5">
+    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+    <div>@Html.PagedListPager(Model, page => Url.Action("Index", new { page, stat = ViewBag.CurrentSort }))</div>
+</div>
+

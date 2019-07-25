@@ -1,0 +1,35 @@
+﻿@model Warsztat.Models.CustomerMessages
+
+@using (Html.BeginForm("CreateMessage","Reports")) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <div class="mt-5"><h4><ion-icon name="chatboxes"></ion-icon> Czat </h4></div>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group " id=" Title">
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Message, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.ReportId)
+    @Html.HiddenFor(model => model.User)
+    @Html.HiddenFor(model => model.Date)
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.ReportId, "ReportId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ReportId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ReportId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Wyślij" class="btn btn-sm btn-dark float-right" />
+        </div>
+    </div>
+</div>
+}
+

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Potwierdź adres e-mail";
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <h2 class="mt-5 text-success">Sukces</h2>
+
+    <div class="mt-5 mb-5">
+        Klient został dodany z sukcesem!
+
+    </div>
+
+}
+else
+{
+    <h2 class="mt-5 text-danger">@ViewBag.Title.</h2>
+
+    <div class="mt-5 mb-5">
+        Mail potwierdzający rejstrację został wysłany podczas rejstracji konta!
+
+    </div>
+}

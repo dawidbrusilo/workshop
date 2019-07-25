@@ -1,0 +1,42 @@
+﻿@model Warsztat.Models.IndexViewModel
+@{
+    ViewBag.Title = "Zarządzaj";
+}
+
+
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+
+<div class="container ">
+    <div class="row">
+        <div class="col-sm-8 col-md-8 col-lg-8 mx-auto ">
+            <div class="card card-signin my-5 shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-body">
+                    <h3 class="card-title text-center  mb-4">
+                        Zmień ustawienia konta
+                    </h3>
+                    <div class="mb-5">
+
+                        <hr />
+                        <dl class="dl-horizontal">
+                            <dt>Hasło: </dt>
+                            <dd>
+
+                                [ @Html.ActionLink("Zmień hasło", "ChangePassword") ]
+
+
+                            </dd>
+
+                            <dt>Edytuj swoje dane:</dt>
+                            <dd class="mb-5">
+
+                                [ @Html.ActionLink("Edytuj", "Edit") ]
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

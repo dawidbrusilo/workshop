@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Warsztat.Models.Car>
+
+@{
+    ViewBag.Title = "Twoje samochody";
+}
+
+<h2 class="mt-5">Przypisane samochody</h2>
+
+
+<table class="table table-striped mt-4">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Make)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Engine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfProduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlateNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserID)
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            
+
+        </tr>
+    </thead>
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Make)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Engine)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfProduction)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlateNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
+        </td>
+        <td> @Html.ActionLink("Edytuj", "Edit", "Cars", new { id = item.Id }, null)</td>
+        <td> @Html.ActionLink("Historia", "History", "Cars", new { id = item.Id }, null)</td>
+     
+        <td> @Html.ActionLink("Szczegóły", "Details", "Cars", new { id = item.Id }, null)</td>
+        <td> @Html.ActionLink("Usuń", "Delete", "Cars", new { id = item.Id }, null) </td>
+        
+    </tr>
+        }
+
+</table>
+
